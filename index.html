@@ -46,70 +46,68 @@
       html { font-size: 17px; }
     }
 
-    /* Laptop — balanced width, normal text size */
+    /* Laptop — full screen dashboard */
     @media (min-width: 768px) {
       .app {
-        max-width: 820px;
-        padding-left: 28px;
-        padding-right: 28px;
+        max-width: 100%;
+        padding-left: 32px;
+        padding-right: 32px;
       }
 
-      .header-inner {
-        max-width: 820px;
-      }
-
-      .nav-inner {
-        max-width: 820px;
+      .header-inner,
+      .nav-inner,
+      .disclaimer {
+        max-width: 100%;
+        padding-left: 8px;
+        padding-right: 8px;
       }
 
       .main {
-        padding: 28px 0 32px;
+        padding: 24px 0 32px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .dash-full { grid-column: 1 / -1; }
+
+      .dash-stats-row {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
       }
 
       .hero-networth {
-        padding: 32px 28px;
+        padding: 36px 40px;
       }
 
       .hero-amount {
-        font-size: 2.75rem;
-        padding-right: 110px;
+        font-size: 3rem;
+        padding-right: 130px;
       }
 
-      .hero-3d-art {
-        width: 110px;
-        height: 110px;
-      }
-
-      .stat-card .value {
-        font-size: 1.55rem;
+      .hero-breakdown {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 720px;
       }
 
       .quick-actions {
         grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
       }
 
-      .grid-3 {
-        gap: 16px;
-      }
-
-      .section-title {
-        font-size: 1.35rem;
-      }
-
-      .disclaimer {
-        max-width: 820px;
-        margin: 0 auto;
-      }
+      .help-banner { display: none; }
     }
 
-    /* Big monitor — thoda aur wide */
     @media (min-width: 1200px) {
-      .app,
-      .header-inner,
-      .nav-inner,
-      .disclaimer {
-        max-width: 900px;
+      .dashboard-grid {
+        grid-template-columns: 1.1fr 1fr;
+        gap: 24px;
       }
     }
 
@@ -134,7 +132,7 @@
       z-index: 0;
     }
 
-    .app { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding-bottom: 120px; width: 100%; }
+    .app { position: relative; z-index: 1; max-width: 100%; margin: 0 auto; padding-bottom: 120px; width: 100%; padding-left: 16px; padding-right: 16px; }
 
     /* Header */
     .header {
@@ -151,7 +149,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 820px;
+      max-width: 100%;
       margin: 0 auto;
     }
 
@@ -227,7 +225,7 @@
     }
 
     .nav-inner {
-      max-width: 640px;
+      max-width: 100%;
       margin: 0 auto;
       display: flex;
       justify-content: space-around;
@@ -1147,7 +1145,44 @@
 
     .badge { padding: 5px 12px; font-size: 0.75rem; }
 
+    .dash-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .dash-full { width: 100%; }
+
+    .dash-block { margin-bottom: 0; }
+
+    .dash-block-title {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .mini-form .form-group { margin-bottom: 12px; }
+    .mini-form .form-input, .mini-form .form-select { min-height: 48px; font-size: 1rem; }
+
+    .holdings-compact .holding-item { padding: 12px; margin-bottom: 8px; }
+    .holdings-compact .holding-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+    .goals-compact .goal-card { margin-bottom: 10px; }
+    .sip-mini .calc-result { margin-top: 12px; padding: 16px; }
+    .sip-mini .calc-result-value { font-size: 1.75rem; }
+
     @media (max-width: 600px) {
+      .dash-stats-row { grid-template-columns: 1fr; }
       .hero-amount { padding-right: 0; }
       .hero-3d-art { opacity: 0.5; right: 8px; width: 90px; height: 90px; }
       .quick-actions { grid-template-columns: 1fr; }
@@ -1183,17 +1218,11 @@
     </header>
 
     <main class="main">
-      <!-- HOME -->
+      <!-- HOME — Full Dashboard -->
       <section id="panel-home" class="panel active">
-        <div class="help-banner">
-          <div class="help-banner-icon">💡</div>
-          <div>
-            <h3>Your money dashboard</h3>
-            <p>See everything you own — bank cash + investments. Tap the blue card to add your bank balance.</p>
-          </div>
-        </div>
 
-        <div class="hero-networth card-tap" id="heroCard" onclick="openModal('bankModal')">
+        <!-- Net Worth Hero -->
+        <div class="hero-networth card-tap dash-full" id="heroCard" onclick="openModal('bankModal')">
           <div class="hero-3d-art" aria-hidden="true">
             <div class="coin-stack">
               <div class="coin"></div>
@@ -1203,7 +1232,7 @@
           </div>
           <div class="hero-label">Total Net Worth</div>
           <div class="hero-amount" id="netWorthDisplay">₹0</div>
-          <div class="hero-hint">Tap here to update bank balance</div>
+          <div class="hero-hint">Tap to update bank balance</div>
           <div class="hero-breakdown">
             <div class="hero-stat">
               <div class="hero-stat-label">Investments</div>
@@ -1220,35 +1249,10 @@
           </div>
         </div>
 
-        <div class="section-header">
-          <div class="section-title">Quick Actions</div>
-        </div>
-        <div class="quick-actions">
-          <div class="quick-action" onclick="switchPanel('cashflow'); switchCfTab('income')">
-            <div class="quick-action-icon" style="background:linear-gradient(135deg,#d1fae5,#6ee7b7)">💵</div>
-            <div class="quick-action-title">Log Money In</div>
-            <div class="quick-action-desc">Record income from work, family, or freelance</div>
-          </div>
-          <div class="quick-action" onclick="switchPanel('cashflow'); switchCfTab('expense')">
-            <div class="quick-action-icon" style="background:linear-gradient(135deg,#fee2e2,#fca5a5)">🛒</div>
-            <div class="quick-action-title">Log Spending</div>
-            <div class="quick-action-desc">Track food, travel, college, and other expenses</div>
-          </div>
-          <div class="quick-action" onclick="switchPanel('portfolio')">
-            <div class="quick-action-icon" style="background:linear-gradient(135deg,#dbeafe,#93c5fd)">📊</div>
-            <div class="quick-action-title">My Investments</div>
-            <div class="quick-action-desc">Stocks, ETFs, and mutual funds you own</div>
-          </div>
-          <div class="quick-action" onclick="switchPanel('goals')">
-            <div class="quick-action-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">🎯</div>
-            <div class="quick-action-title">Set a Goal</div>
-            <div class="quick-action-desc">Car, house, emergency fund — plan ahead</div>
-          </div>
-        </div>
-
-        <div class="grid-3 mb-20">
+        <!-- All Stats Row -->
+        <div class="dash-stats-row dash-full">
           <div class="card stat-card card-3d">
-            <div class="label">Money Earned Today</div>
+            <div class="label">Earned Today</div>
             <div class="value positive" id="todayIncome">₹0</div>
           </div>
           <div class="card stat-card card-3d">
@@ -1259,46 +1263,209 @@
             <div class="label">Saved Today</div>
             <div class="value" id="todaySaved">₹0</div>
           </div>
-        </div>
-
-        <div class="section-header">
-          <div>
-            <div class="section-title">This Month</div>
-            <div class="section-sub" id="monthLabel"></div>
+          <div class="card stat-card card-3d">
+            <div class="label">Month Income</div>
+            <div class="value positive" id="monthIncome">₹0</div>
+          </div>
+          <div class="card stat-card card-3d">
+            <div class="label">Month Expenses</div>
+            <div class="value negative" id="monthExpense">₹0</div>
+          </div>
+          <div class="card stat-card card-3d">
+            <div class="label">Month Saved</div>
+            <div class="value" id="monthSaved">₹0</div>
           </div>
         </div>
 
-        <div class="card mb-20">
-          <div class="chart-bars" id="monthChart"></div>
-          <div class="grid-3 mt-12">
-            <div class="stat-card">
-              <div class="label">Income</div>
-              <div class="value positive" id="monthIncome">₹0</div>
-            </div>
-            <div class="stat-card">
-              <div class="label">Expenses</div>
-              <div class="value negative" id="monthExpense">₹0</div>
-            </div>
-            <div class="stat-card">
-              <div class="label">Net Saved</div>
-              <div class="value" id="monthSaved">₹0</div>
-            </div>
+        <!-- Quick Actions -->
+        <div class="quick-actions dash-full">
+          <div class="quick-action" onclick="scrollToSection('log-income')">
+            <div class="quick-action-icon" style="background:linear-gradient(135deg,#d1fae5,#6ee7b7)">💵</div>
+            <div class="quick-action-title">Log Money In</div>
+            <div class="quick-action-desc">Record income</div>
+          </div>
+          <div class="quick-action" onclick="scrollToSection('log-expense')">
+            <div class="quick-action-icon" style="background:linear-gradient(135deg,#fee2e2,#fca5a5)">🛒</div>
+            <div class="quick-action-title">Log Spending</div>
+            <div class="quick-action-desc">Track expenses</div>
+          </div>
+          <div class="quick-action" onclick="scrollToSection('investments-section')">
+            <div class="quick-action-icon" style="background:linear-gradient(135deg,#dbeafe,#93c5fd)">📊</div>
+            <div class="quick-action-title">Investments</div>
+            <div class="quick-action-desc">Stocks &amp; mutual funds</div>
+          </div>
+          <div class="quick-action" onclick="scrollToSection('goals-section')">
+            <div class="quick-action-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">🎯</div>
+            <div class="quick-action-title">Goals</div>
+            <div class="quick-action-desc">Car, house, savings</div>
           </div>
         </div>
 
-        <div class="section-header">
-          <div class="section-title">Recent Activity</div>
-          <button class="btn btn-sm btn-secondary" onclick="switchPanel('cashflow')">View All</button>
-        </div>
-        <div class="card" id="recentActivity">
-          <div class="empty-state">No transactions yet. Start logging!</div>
-        </div>
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid dash-full">
 
-        <div class="section-header">
-          <div class="section-title">Goal Progress</div>
-          <button class="btn btn-sm btn-secondary" onclick="switchPanel('goals')">All Goals</button>
+          <!-- LEFT COLUMN -->
+          <div class="dash-col">
+
+            <!-- Log Income -->
+            <div class="dash-block" id="log-income">
+              <div class="dash-block-title">💵 Log Money In</div>
+              <div class="card mini-form">
+                <form onsubmit="addHomeTransaction(event, 'income')">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Amount (₹)</label>
+                      <input type="number" class="form-input" id="homeIncomeAmount" min="1" required placeholder="500" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Date</label>
+                      <input type="date" class="form-input" id="homeIncomeDate" required />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Source</label>
+                      <select class="form-select" id="homeIncomeSource">
+                        <option value="Part-time Work">Part-time Work</option>
+                        <option value="Freelance">Freelance</option>
+                        <option value="Family">Family</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Note</label>
+                      <input type="text" class="form-input" id="homeIncomeNote" placeholder="optional" />
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block">Save Income</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Log Expense -->
+            <div class="dash-block" id="log-expense">
+              <div class="dash-block-title">🛒 Log Spending</div>
+              <div class="card mini-form">
+                <form onsubmit="addHomeTransaction(event, 'expense')">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Amount (₹)</label>
+                      <input type="number" class="form-input" id="homeExpenseAmount" min="1" required placeholder="200" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Date</label>
+                      <input type="date" class="form-input" id="homeExpenseDate" required />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Category</label>
+                      <select class="form-select" id="homeExpenseCategory">
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="College">College</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Note</label>
+                      <input type="text" class="form-input" id="homeExpenseNote" placeholder="optional" />
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block">Save Expense</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="dash-block">
+              <div class="dash-block-title">📈 This Month <span class="text-muted" id="monthLabel" style="font-weight:400;font-size:0.95rem"></span></div>
+              <div class="card">
+                <div class="chart-bars" id="monthChart"></div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="dash-block">
+              <div class="dash-block-title">🕐 Recent Activity</div>
+              <div class="card" id="recentActivity">
+                <div class="empty-state">No transactions yet. Log income or expense above!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="dash-col">
+
+            <!-- Investments -->
+            <div class="dash-block" id="investments-section">
+              <div class="dash-block-title">
+                📊 My Investments
+                <button class="btn btn-sm btn-primary" onclick="openAddHolding()">+ Add</button>
+              </div>
+              <div class="card card-glow mb-12">
+                <div class="flex-between">
+                  <div>
+                    <div class="text-muted">Portfolio Value</div>
+                    <div style="font-family:'Instrument Serif',serif;font-size:2rem" id="homePortfolioValue">₹0</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="text-muted">Invested</div>
+                    <div style="font-weight:700;font-size:1.1rem" id="homePortfolioInvested">₹0</div>
+                    <div id="homePortfolioPnl" class="holding-pnl up">+₹0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="holdings-compact" id="homeHoldingsList"></div>
+            </div>
+
+            <!-- Goals -->
+            <div class="dash-block" id="goals-section">
+              <div class="dash-block-title">
+                🎯 My Goals
+                <button class="btn btn-sm btn-secondary" onclick="switchPanel('goals')">Manage</button>
+              </div>
+              <div class="goals-compact" id="homeGoalsPreview"></div>
+            </div>
+
+            <!-- SIP Calculator -->
+            <div class="dash-block" id="sip-tool">
+              <div class="dash-block-title">🧮 SIP Calculator</div>
+              <div class="card sip-mini">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Target (₹)</label>
+                    <input type="number" class="form-input" id="sipTarget" value="300000" oninput="calcSIP()" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Months</label>
+                    <input type="number" class="form-input" id="sipMonths" value="24" min="1" oninput="calcSIP()" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Expected Return (%/year)</label>
+                  <select class="form-select" id="sipReturn" onchange="calcSIP()">
+                    <option value="7">7% — Safe (Debt/Liquid)</option>
+                    <option value="12" selected>12% — Index Fund</option>
+                    <option value="14">14% — Flexi Cap</option>
+                    <option value="18">18% — Small Cap</option>
+                  </select>
+                </div>
+                <div class="calc-result">
+                  <div class="text-muted">Monthly SIP needed</div>
+                  <div class="calc-result-value" id="sipMonthly">₹0</div>
+                  <div class="grid-2 mt-12">
+                    <div><span class="text-muted">Total Invested</span><br><strong id="sipInvested">₹0</strong></div>
+                    <div><span class="text-muted">Market Gains</span><br><strong id="sipGains">₹0</strong></div>
+                  </div>
+                  <div class="mt-12 text-muted" id="sipDaily"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div id="homeGoalsPreview"></div>
       </section>
 
       <!-- CASHFLOW -->
@@ -1496,37 +1663,15 @@
 
         <div id="calc-sip">
           <div class="card mb-20">
-            <div class="section-title mb-12">How Much Should I Invest?</div>
-            <p class="text-muted mb-12">Enter your target amount and timeline — we'll tell you the monthly SIP needed.</p>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Target Amount (₹)</label>
-                <input type="number" class="form-input" id="sipTarget" value="300000" oninput="calcSIP()" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Time (months)</label>
-                <input type="number" class="form-input" id="sipMonths" value="24" min="1" oninput="calcSIP()" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Expected Annual Return (%)</label>
-              <select class="form-select" id="sipReturn" onchange="calcSIP()">
-                <option value="7">7% — Debt / Liquid Fund (Low Risk)</option>
-                <option value="10">10% — Hybrid / Balanced Fund</option>
-                <option value="12" selected>12% — Index Fund (Nifty 50)</option>
-                <option value="14">14% — Flexi Cap Fund</option>
-                <option value="16">16% — Mid Cap Fund</option>
-                <option value="18">18% — Small Cap Fund (High Risk)</option>
-              </select>
-            </div>
-            <div class="calc-result" id="sipResult">
-              <div class="text-muted">Monthly SIP Required</div>
-              <div class="calc-result-value" id="sipMonthly">₹0</div>
+            <div class="section-title mb-12">SIP Calculator</div>
+            <p class="text-muted mb-12">Use the SIP calculator on the Home dashboard. Quick examples below:</p>
+            <div class="calc-result">
+              <div class="text-muted">Current Monthly SIP (from dashboard)</div>
+              <div class="calc-result-value" id="sipMonthlyTools">₹0</div>
               <div class="grid-2 mt-12">
-                <div><span class="text-muted">Total Invested</span><br><strong id="sipInvested">₹0</strong></div>
-                <div><span class="text-muted">Market Gains</span><br><strong id="sipGains">₹0</strong></div>
+                <div><span class="text-muted">Total Invested</span><br><strong id="sipInvestedTools">₹0</strong></div>
+                <div><span class="text-muted">Market Gains</span><br><strong id="sipGainsTools">₹0</strong></div>
               </div>
-              <div class="mt-12 text-muted" id="sipDaily"></div>
             </div>
           </div>
 
@@ -1858,6 +2003,52 @@
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById('panel-' + name).classList.add('active');
       document.querySelector(`.nav-item[data-panel="${name}"]`).classList.add('active');
+      if (name === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToSection(id) {
+      switchPanel('home');
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    function addHomeTransaction(e, type) {
+      e.preventDefault();
+      const isIncome = type === 'income';
+      const tx = {
+        id: Date.now().toString(),
+        type,
+        amount: parseFloat(isIncome ? document.getElementById('homeIncomeAmount').value : document.getElementById('homeExpenseAmount').value),
+        date: isIncome ? document.getElementById('homeIncomeDate').value : document.getElementById('homeExpenseDate').value,
+        category: isIncome ? document.getElementById('homeIncomeSource').value : document.getElementById('homeExpenseCategory').value,
+        note: isIncome ? document.getElementById('homeIncomeNote').value : document.getElementById('homeExpenseNote').value,
+      };
+      data.transactions.unshift(tx);
+      saveData();
+      e.target.reset();
+      document.getElementById('homeIncomeDate').value = todayStr();
+      document.getElementById('homeExpenseDate').value = todayStr();
+      showToast(isIncome ? 'Income saved!' : 'Expense saved!');
+    }
+
+    function holdingRowHtml(h) {
+      const pnl = h.current - h.invested;
+      const pct = ((pnl / h.invested) * 100).toFixed(1);
+      const col = HOLDING_COLORS[h.color] || HOLDING_COLORS.blue;
+      return `
+        <div class="holding-item" onclick="editHolding('${h.id}')">
+          <div class="holding-icon" style="background:${col.bg}">${col.emoji}</div>
+          <div class="holding-info">
+            <div class="holding-name">${h.name}</div>
+            <div class="holding-meta">${h.type} · ${h.platform || '—'}</div>
+          </div>
+          <div class="holding-values">
+            <div class="holding-current">${formatINR(h.current)}</div>
+            <div class="holding-pnl ${pnl >= 0 ? 'up' : 'down'}">${pnl >= 0 ? '+' : ''}${formatINR(pnl)} (${pct}%)</div>
+          </div>
+        </div>`;
     }
 
     function openModal(id) {
@@ -1920,28 +2111,28 @@
       pnlEl.textContent = (ps.pnl >= 0 ? '+' : '') + formatINR(ps.pnl) + ` (${((ps.pnl / ps.invested) * 100).toFixed(1)}%)`;
       pnlEl.className = 'holding-pnl ' + (ps.pnl >= 0 ? 'up' : 'down');
 
+      // Home dashboard portfolio
+      const homeVal = document.getElementById('homePortfolioValue');
+      const homeInv = document.getElementById('homePortfolioInvested');
+      const homePnl = document.getElementById('homePortfolioPnl');
+      if (homeVal) homeVal.textContent = formatINR(ps.current);
+      if (homeInv) homeInv.textContent = formatINR(ps.invested);
+      if (homePnl) {
+        homePnl.textContent = (ps.pnl >= 0 ? '+' : '') + formatINR(ps.pnl);
+        homePnl.className = 'holding-pnl ' + (ps.pnl >= 0 ? 'up' : 'down');
+      }
+
       const list = document.getElementById('holdingsList');
+      const homeList = document.getElementById('homeHoldingsList');
+      const empty = '<div class="empty-state">No holdings yet. Tap + Add to start.</div>';
       if (!data.holdings.length) {
-        list.innerHTML = '<div class="empty-state">No holdings yet. Tap + Add to start.</div>';
+        if (list) list.innerHTML = empty;
+        if (homeList) homeList.innerHTML = empty;
         return;
       }
-      list.innerHTML = data.holdings.map(h => {
-        const pnl = h.current - h.invested;
-        const pct = ((pnl / h.invested) * 100).toFixed(1);
-        const col = HOLDING_COLORS[h.color] || HOLDING_COLORS.blue;
-        return `
-          <div class="holding-item" onclick="editHolding('${h.id}')">
-            <div class="holding-icon" style="background:${col.bg}">${col.emoji}</div>
-            <div class="holding-info">
-              <div class="holding-name">${h.name}</div>
-              <div class="holding-meta">${h.type} · ${h.platform || '—'}</div>
-            </div>
-            <div class="holding-values">
-              <div class="holding-current">${formatINR(h.current)}</div>
-              <div class="holding-pnl ${pnl >= 0 ? 'up' : 'down'}">${pnl >= 0 ? '+' : ''}${formatINR(pnl)} (${pct}%)</div>
-            </div>
-          </div>`;
-      }).join('');
+      const html = data.holdings.map(h => holdingRowHtml(h)).join('');
+      if (list) list.innerHTML = html;
+      if (homeList) homeList.innerHTML = html;
     }
 
     function openAddHolding() {
@@ -2148,7 +2339,7 @@
       };
 
       list.innerHTML = data.goals.map(g => goalHtml(g, false)).join('');
-      document.getElementById('homeGoalsPreview').innerHTML = data.goals.slice(0, 2).map(g => goalHtml(g, true)).join('');
+      document.getElementById('homeGoalsPreview').innerHTML = data.goals.map(g => goalHtml(g, false)).join('');
     }
 
     function addGoal(e) {
@@ -2212,7 +2403,14 @@
       document.getElementById('sipMonthly').textContent = formatINR(monthly);
       document.getElementById('sipInvested').textContent = formatINR(invested);
       document.getElementById('sipGains').textContent = formatINR(gains);
-      document.getElementById('sipDaily').textContent = `That's roughly ${formatINR(monthly / 30)}/day · ${formatINR(monthly * 12 / 52)}/week`;
+      document.getElementById('sipDaily').textContent = `~${formatINR(monthly / 30)}/day · ${formatINR(monthly * 12 / 52)}/week`;
+
+      const toolsMonthly = document.getElementById('sipMonthlyTools');
+      if (toolsMonthly) {
+        toolsMonthly.textContent = formatINR(monthly);
+        document.getElementById('sipInvestedTools').textContent = formatINR(invested);
+        document.getElementById('sipGainsTools').textContent = formatINR(gains);
+      }
     }
 
     function renderSipExamples() {
@@ -2232,10 +2430,12 @@
     }
 
     function applySipExample(target, months, rate) {
+      switchPanel('home');
       document.getElementById('sipTarget').value = target;
       document.getElementById('sipMonths').value = months;
       document.getElementById('sipReturn').value = rate;
       calcSIP();
+      setTimeout(() => scrollToSection('sip-tool'), 150);
       showToast('Example applied');
     }
 
@@ -2337,6 +2537,8 @@
     // Init
     document.getElementById('incomeDate').value = todayStr();
     document.getElementById('expenseDate').value = todayStr();
+    document.getElementById('homeIncomeDate').value = todayStr();
+    document.getElementById('homeExpenseDate').value = todayStr();
     render();
     initWelcome();
     initHero3D();
